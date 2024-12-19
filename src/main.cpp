@@ -24,7 +24,7 @@ const float dt = 0.1f; // 100 ms
 
 // Plage de sortie PWM (en microsecondes) pour V
 const int pwmMin_V = 1100;
-const int pwmMax_V = 1600;
+const int pwmMax_V = 1550;
 
 //======================= Variables globales =============================
 
