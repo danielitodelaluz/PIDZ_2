@@ -9,10 +9,10 @@
 const uint8_t PIN_US_TRIG = 2;
 const uint8_t PIN_US_ECHO = 3;
 const uint8_t PIN_IN_MODE = 4;
-const uint8_t PIN_OUT_V = 12;
+const uint8_t PIN_OUT_V = 10;
 const uint8_t PIN_OUT_L = 13;
 const uint8_t PIN_OUT_T = 11;
-const uint8_t PIN_OUT_R = 10;
+const uint8_t PIN_OUT_R = 12;
 const uint8_t PIN_in_V = 21;
 const uint8_t PIN_in_L = 18;
 const uint8_t PIN_in_T = 20;
@@ -132,7 +132,7 @@ void setup() {
   pwm_mode = pulseIn(PIN_IN_MODE, HIGH, 25000);
   while (pwm_mode > 1500 ){
     pwm_mode = pulseIn(PIN_IN_MODE, HIGH, 25000);
-    delay(200);
+    delay(500);
   }
   // Allumage de a LED
   pinMode(LED_BUILTIN, OUTPUT);
@@ -146,7 +146,7 @@ void loop() {
   static float lastValidAltitude = 0.0f;
 
   pwm_mode = pulseIn(PIN_IN_MODE, HIGH, 25000);
-  if(pwm_mode<1500){
+  if(pwm_mode>1500){
     while(true){
       pwm_V = pulseIn(PIN_in_V, HIGH, 25000);
       pwm_L = pulseIn(PIN_in_L, HIGH, 25000);
