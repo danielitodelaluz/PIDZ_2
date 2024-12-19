@@ -11,7 +11,7 @@ const uint8_t PIN_US_ECHO = 3;
 
 const uint8_t PIN_IN_MODE = 4;
 
-const uint8_t PIN_OUT_V = 5;
+const uint8_t PIN_OUT_V = 21;
 
 unsigned long pwm_mode = 0;
 
