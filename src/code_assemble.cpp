@@ -9,14 +9,16 @@
 const uint8_t PIN_US_TRIG = 2;
 const uint8_t PIN_US_ECHO = 3;
 const uint8_t PIN_IN_MODE = 4;
+
 const uint8_t PIN_OUT_V = 12;
 const uint8_t PIN_OUT_L = 13;
 const uint8_t PIN_OUT_T = 11;
 const uint8_t PIN_OUT_R = 10;
-const uint8_t PIN_in_V = 21;
+
+const uint8_t PIN_in_V = 19;
 const uint8_t PIN_in_L = 18;
 const uint8_t PIN_in_T = 20;
-const uint8_t PIN_in_R = 19;
+const uint8_t PIN_in_R = 21;
 
 
 
@@ -29,7 +31,7 @@ float Kp_V = 30.0f;
 float Ki_V = 0.0f;
 float Kd_V = 10.0f;
 const float dt = 0.1f; // 100 ms
-const int pwmMin_V = 1100;
+const int pwmMin_V = 991;
 const int pwmMax_V = 1400;
 float lastError = 0.0f;
 float integral = 0.0f;
@@ -162,6 +164,7 @@ void loop() {
       pwm_L = pulseIn(PIN_in_L, HIGH, 25000);
       pwm_T = pulseIn(PIN_in_T, HIGH, 25000);
       pwm_R = pulseIn(PIN_in_R, HIGH, 25000);
+
       vServo.writeMicroseconds(pwm_V);
       lServo.writeMicroseconds(pwm_L);
       tServo.writeMicroseconds(pwm_T);
@@ -172,7 +175,7 @@ void loop() {
     // Augmenter progressivement la consigne Z selon la hauteur
   if (consigne_altitude < 150.0f) {
     if (consigne_altitude < 50.0f) {
-      consigne_altitude += 1.0f * dt; // Augmentation lente
+      consigne_altitude += 5.0f * dt; // Augmentation lente
     } 
     else if (consigne_altitude < 100.0f) {
       consigne_altitude += 10.0f * dt; // Augmentation modérée
