@@ -5,40 +5,29 @@
 #include <Arduino.h>
 #include <Servo.h>
 
-//======================= Constantes de configuration ======================
+//======================= pin ======================
+const uint8_t PIN_US_TRIG = 2;
+const uint8_t PIN_US_ECHO = 3;
 
-// Broches du capteur ultrason
-const uint16_t PIN_US_TRIG = 2;
-const uint16_t PIN_US_ECHO = 3;
+const uint8_t PIN_IN_MODE = 4;
 
-//Broche lecture du mode
-const uint16_t PIN_IN_MODE = 4;
+const uint8_t PIN_OUT_V = 5;
 
-// Broche PWM pour la commande verticale (V)
-const uint16_t PIN_OUT_V = 5;
-
-// Variables pour stocker le signal PWM du mode
 unsigned long pwm_mode = 0;
 
-// PID constants (ajustables)
 float Kp_V = 30.0f;
 float Ki_V = 0.0f;
 float Kd_V = 10.0f;
 
-// Temps d'échantillonnage (en secondes)
-const float dt = 0.1f; // 100 ms
 
-// Plage de sortie PWM (en microsecondes) pour V
+//======================= variable ======================
+//===PID===
+const float dt = 0.1f; // 100 ms
 const int pwmMin_V = 991;
 const int pwmMax_V = 2016;
-
-//======================= Variables globales =============================
-
-// Variables PID
 float lastError = 0.0f;
 float integral = 0.0f;
 Servo vServo;
-
 
 
 //======================= Fonctions utilitaires ===========================
@@ -118,12 +107,10 @@ void setup() {
   pinMode(PIN_US_ECHO, INPUT);
   pinMode(PIN_IN_MODE, INPUT);
 
-  // Attache du servo pour la commande V
   vServo.attach(PIN_OUT_V);
 
   // Initialisation de la commande V à un niveau neutre
   vServo.writeMicroseconds((pwmMin_V + pwmMax_V) / 2);
-
 
   // Test mode auto activé
   pwm_mode = pulseIn(PIN_IN_MODE, HIGH, 25000);
@@ -131,6 +118,8 @@ void setup() {
     pwm_mode = pulseIn(PIN_IN_MODE, HIGH, 25000);
     delay(200);
   }
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 

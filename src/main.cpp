@@ -23,8 +23,8 @@ float Kd_V = 10.0f;
 const float dt = 0.1f; // 100 ms
 
 // Plage de sortie PWM (en microsecondes) pour V
-const int pwmMin_V = 1100;
-const int pwmMax_V = 1550;
+const int pwmMin_V = 0;
+const int pwmMax_V = 2000;
 
 //======================= Variables globales =============================
 
@@ -113,6 +113,9 @@ void setup() {
 
   // Initialisation de la commande V à un niveau neutre
   vServo.writeMicroseconds((pwmMin_V + pwmMax_V) / 2);
+
+  pinMode(LED_BUILTIN, OUTPUT);
+  digitalWrite(LED_BUILTIN, HIGH);
 }
 
 //======================= Boucle principale ===============================
