@@ -2,7 +2,7 @@
 #include <Servo.h>
 
 //======================= Configuration ======================
-const uint8_t pwmPin = 10.0f; // Remplace par la broche de ton choix
+const uint8_t pwmPin = 10; // Remplace par la broche de ton choix
 const int pwmValue = 1500.0f; // PWM fixe à 2000 microsecondes
 
 Servo pwmServo; // Création de l'objet Servo

@@ -8,26 +8,39 @@
 //======================= pin ======================
 const uint8_t PIN_US_TRIG = 2;
 const uint8_t PIN_US_ECHO = 3;
-
 const uint8_t PIN_IN_MODE = 4;
+const uint8_t PIN_OUT_V = 12;
+const uint8_t PIN_OUT_L = 13;
+const uint8_t PIN_OUT_T = 11;
+const uint8_t PIN_OUT_R = 10;
+const uint8_t PIN_in_V = 21;
+const uint8_t PIN_in_L = 18;
+const uint8_t PIN_in_T = 20;
+const uint8_t PIN_in_R = 19;
 
-const uint8_t PIN_OUT_V =12;
 
+
+
+//======================= variable ======================
+//===PID===
 unsigned long pwm_mode = 0;
 
 float Kp_V = 30.0f;
 float Ki_V = 0.0f;
 float Kd_V = 10.0f;
-
-
-//======================= variable ======================
-//===PID===
 const float dt = 0.1f; // 100 ms
 const int pwmMin_V = 1100;
 const int pwmMax_V = 1600;
 float lastError = 0.0f;
 float integral = 0.0f;
+int pwm_V = 0;
+int pwm_L = 0;
+int pwm_T = 0;
+int pwm_R = 0;
 Servo vServo;
+Servo lServo;
+Servo tServo;
+Servo rServo;
 
 
 //======================= Fonctions utilitaires ===========================
@@ -108,6 +121,9 @@ void setup() {
   pinMode(PIN_IN_MODE, INPUT);
 
   vServo.attach(PIN_OUT_V);
+  lServo.attach(PIN_OUT_L);
+  tServo.attach(PIN_OUT_T);
+  rServo.attach(PIN_OUT_R);
 
   // Initialisation de la commande V à un niveau neutre
   vServo.writeMicroseconds((pwmMin_V + pwmMax_V) / 2);
@@ -118,6 +134,7 @@ void setup() {
     pwm_mode = pulseIn(PIN_IN_MODE, HIGH, 25000);
     delay(200);
   }
+  // Allumage de a LED
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
 }
@@ -128,7 +145,21 @@ void loop() {
   static float consigne_altitude = 0.0f;
   static float lastValidAltitude = 0.0f;
 
-    // Augmenter progressivement la consigne selon la hauteur
+  pwm_mode = pulseIn(PIN_IN_MODE, HIGH, 25000);
+  if(pwm_mode<1500){
+    while(true){
+      pwm_V = pulseIn(PIN_in_V, HIGH, 25000);
+      pwm_L = pulseIn(PIN_in_L, HIGH, 25000);
+      pwm_T = pulseIn(PIN_in_T, HIGH, 25000);
+      pwm_R = pulseIn(PIN_in_R, HIGH, 25000);
+      vServo.writeMicroseconds(pwm_V);
+      lServo.writeMicroseconds(pwm_L);
+      tServo.writeMicroseconds(pwm_T);
+      rServo.writeMicroseconds(pwm_R);
+
+    }
+  }
+    // Augmenter progressivement la consigne Z selon la hauteur
   if (consigne_altitude < 150.0f) {
     if (consigne_altitude < 50.0f) {
       consigne_altitude += 5.0f * dt; // Augmentation lente
@@ -137,13 +168,13 @@ void loop() {
       consigne_altitude += 10.0f * dt; // Augmentation modérée
     } 
     else {
-      consigne_altitude += 5.0f * dt; // Augmentation rapide
+      consigne_altitude += 5.0f * dt; // Augmentation lente
     }
     consigne_altitude = constrainFloat(consigne_altitude, 0.0f, 150.0f);
   }
 
   // Lecture de l'altitude
-   float currentAltitude = measureDistanceCM()- 11.34f;
+  float currentAltitude = measureDistanceCM();
 
   // Calcul de la commande V
   int vCommand = CommandeV(consigne_altitude, currentAltitude);
