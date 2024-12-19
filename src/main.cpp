@@ -24,7 +24,7 @@ const uint8_t trigPin = 2;
 const uint8_t echoPin = 3;
 
 // Broche PWM pour la commande verticale (V)
-const uint8_t vPin = 10;
+const uint8_t vPin = 12;
 
 // PID constants (ajustables)
 float Kp_V = 30.0f;
@@ -35,8 +35,8 @@ float Kd_V = 10.0f;
 const float dt = 0.1f; // 100 ms
 
 // Plage de sortie PWM (en microsecondes) pour V
-const int pwmMin_V = 2000;
-const int pwmMax_V = 2000;
+const int pwmMin_V = 1100;
+const int pwmMax_V = 1400;
 
 //======================= Variables globales =============================
 

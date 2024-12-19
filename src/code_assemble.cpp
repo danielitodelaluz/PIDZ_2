@@ -9,10 +9,10 @@
 const uint8_t PIN_US_TRIG = 2;
 const uint8_t PIN_US_ECHO = 3;
 const uint8_t PIN_IN_MODE = 4;
-const uint8_t PIN_OUT_V = 10;
+const uint8_t PIN_OUT_V = 12;
 const uint8_t PIN_OUT_L = 13;
 const uint8_t PIN_OUT_T = 11;
-const uint8_t PIN_OUT_R = 12;
+const uint8_t PIN_OUT_R = 10;
 const uint8_t PIN_in_V = 21;
 const uint8_t PIN_in_L = 18;
 const uint8_t PIN_in_T = 20;
@@ -30,7 +30,7 @@ float Ki_V = 0.0f;
 float Kd_V = 10.0f;
 const float dt = 0.1f; // 100 ms
 const int pwmMin_V = 1100;
-const int pwmMax_V = 1600;
+const int pwmMax_V = 1400;
 float lastError = 0.0f;
 float integral = 0.0f;
 int pwm_V = 0;
@@ -114,26 +114,36 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
   Serial.println("Demarrage du systeme...");
+  delay(4000);
 
   // Configuration des broches du capteur ultrason
   pinMode(PIN_US_TRIG, OUTPUT);
   pinMode(PIN_US_ECHO, INPUT);
   pinMode(PIN_IN_MODE, INPUT);
+  
 
   vServo.attach(PIN_OUT_V);
   lServo.attach(PIN_OUT_L);
   tServo.attach(PIN_OUT_T);
   rServo.attach(PIN_OUT_R);
 
-  // Initialisation de la commande V à un niveau neutre
-  vServo.writeMicroseconds((pwmMin_V + pwmMax_V) / 2);
+//   vServo.writeMicroseconds(1000);
+  lServo.writeMicroseconds(1500);
+  tServo.writeMicroseconds(1500);
+  rServo.writeMicroseconds(1500);
 
-  // Test mode auto activé
+  // Initialisation de la commande V à un niveau neutre
+  vServo.writeMicroseconds(pwmMin_V);
+
+//   Test mode auto activé
   pwm_mode = pulseIn(PIN_IN_MODE, HIGH, 25000);
-  while (pwm_mode > 1500 ){
+  while (pwm_mode > 1850 ){
     pwm_mode = pulseIn(PIN_IN_MODE, HIGH, 25000);
     delay(500);
+    Serial.print("mode : ");
+  Serial.print(pwm_mode);
   }
+
   // Allumage de a LED
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, HIGH);
@@ -162,7 +172,7 @@ void loop() {
     // Augmenter progressivement la consigne Z selon la hauteur
   if (consigne_altitude < 150.0f) {
     if (consigne_altitude < 50.0f) {
-      consigne_altitude += 5.0f * dt; // Augmentation lente
+      consigne_altitude += 1.0f * dt; // Augmentation lente
     } 
     else if (consigne_altitude < 100.0f) {
       consigne_altitude += 10.0f * dt; // Augmentation modérée
@@ -173,14 +183,17 @@ void loop() {
     consigne_altitude = constrainFloat(consigne_altitude, 0.0f, 150.0f);
   }
 
-  // Lecture de l'altitude
-  float currentAltitude = measureDistanceCM();
+    // Lecture de l'altitude
+  float currentAltitude = measureDistanceCM()- 11.31f;
 
   // Calcul de la commande V
   int vCommand = CommandeV(consigne_altitude, currentAltitude);
 
   // Envoi de la commande V au contrôleur de vol
   vServo.writeMicroseconds(vCommand);
+  lServo.writeMicroseconds(1500);
+  tServo.writeMicroseconds(1500);
+  rServo.writeMicroseconds(1500);
 
   // Affichage sur le moniteur série
   Serial.print("Consigne : ");
@@ -189,6 +202,8 @@ void loop() {
   Serial.print(currentAltitude, 2);
   Serial.print(" cm | PWM V : ");
   Serial.println(vCommand);
+  Serial.print("mode : ");
+  Serial.print(pwm_mode);
 
   // Pause pour respecter l'intervalle d'échantillonnage
   delay(100);
