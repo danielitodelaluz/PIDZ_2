@@ -143,15 +143,7 @@ void loop() {
   }
 
   // Lecture de l'altitude
-  float distCM = measureDistanceCM();
-  float currentAltitude;
-  if (distCM < 0) {
-    // Mesure invalide, on utilise la dernière valeur connue
-    currentAltitude = lastValidAltitude;
-  } else {
-    currentAltitude = distCM;
-    lastValidAltitude = currentAltitude;
-  }
+   float currentAltitude = measureDistanceCM()- 11.34f;
 
   // Calcul de la commande V
   int vCommand = CommandeV(consigne_altitude, currentAltitude);
