@@ -6,17 +6,25 @@
 #include <Servo.h>
 
 //======================= Constantes de configuration ======================
-// 21 V 
+// in 
+// 21 R 
 // 20 T (valeurs inversées)
-// 19 R
+// 19 V
 // 18 L
+
+
+//out 
+// V 12
+// L 13
+// T 11
+// R 10
 
 // Broches du capteur ultrason
 const uint8_t trigPin = 2;
 const uint8_t echoPin = 3;
 
 // Broche PWM pour la commande verticale (V)
-const uint8_t vPin = 21;
+const uint8_t vPin = 10;
 
 // PID constants (ajustables)
 float Kp_V = 30.0f;
@@ -27,7 +35,7 @@ float Kd_V = 10.0f;
 const float dt = 0.1f; // 100 ms
 
 // Plage de sortie PWM (en microsecondes) pour V
-const int pwmMin_V = 0;
+const int pwmMin_V = 2000;
 const int pwmMax_V = 2000;
 
 //======================= Variables globales =============================

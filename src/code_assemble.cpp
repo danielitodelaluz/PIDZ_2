@@ -11,7 +11,7 @@ const uint8_t PIN_US_ECHO = 3;
 
 const uint8_t PIN_IN_MODE = 4;
 
-const uint8_t PIN_OUT_V = 21;
+const uint8_t PIN_OUT_V =12;
 
 unsigned long pwm_mode = 0;
 
@@ -23,8 +23,8 @@ float Kd_V = 10.0f;
 //======================= variable ======================
 //===PID===
 const float dt = 0.1f; // 100 ms
-const int pwmMin_V = 991;
-const int pwmMax_V = 2016;
+const int pwmMin_V = 1100;
+const int pwmMax_V = 1600;
 float lastError = 0.0f;
 float integral = 0.0f;
 Servo vServo;

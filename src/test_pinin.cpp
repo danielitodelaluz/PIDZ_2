@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 // Définition des broches utilisées sur la Raspberry Pi Pico
-const uint16_t PIN_MODE = 18;
+const uint16_t PIN_MODE = 14;
 // Variables pour stocker les signaux PWM
 unsigned long pwm_mode = 0;
 
