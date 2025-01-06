@@ -103,7 +103,7 @@ int CommandeV(float consigne_altitude, float currentAltitude) {
   float pidOutput = P_V + I_V + D_V;
   lastError = error;
 
-  // Mapper directement la sortie PID vers la plage PWM
+  // Mapper directement la sortie PID ver s la plage PWM
   int vCommand = (int)mapFloat(pidOutput, -Kp_V * 150.0f, Kp_V * 150.0f, pwmMin_V, pwmMax_V);
   vCommand = constrain(vCommand, pwmMin_V, pwmMax_V);
 

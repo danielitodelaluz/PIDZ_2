@@ -103,9 +103,10 @@ int CommandeV(float consigne_altitude, float currentAltitude) {
   lastError = error;
 
   // Mapper directement la sortie PID vers la plage PWM
-  int vCommand = (int)mapFloat(pidOutput, -Kp_V * 150.0f, Kp_V * 150.0f, pwmMin_V, pwmMax_V);
+  // int vCommand = (int)mapFloat(pidOutput, -Kp_V * 150.0f, Kp_V * 150.0f, pwmMin_V, pwmMax_V);
+  int vCommand0 = 1192;
+  int vCommand = vCommand0 + (int)mapFloat(pidOutput, -Kp_V * 150.0f, Kp_V * 150.0f, pwmMin_V-vCommand0, pwmMax_V-vCommand0);
   vCommand = constrain(vCommand, pwmMin_V, pwmMax_V);
-
   return vCommand;
 }
 
@@ -159,6 +160,7 @@ void loop() {
 
   pwm_mode = pulseIn(PIN_IN_MODE, HIGH, 25000);
   if(pwm_mode>1500){
+    digitalWrite(LED_BUILTIN, LOW);
     while(true){
       pwm_V = pulseIn(PIN_in_V, HIGH, 25000);
       pwm_L = pulseIn(PIN_in_L, HIGH, 25000);
