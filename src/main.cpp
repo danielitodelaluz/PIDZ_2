@@ -6,6 +6,7 @@
 #include <Servo.h>
 
 //======================= Constantes de configuration ======================
+//test du commit
 // in 
 // 21 R 
 // 20 T (valeurs inversées)
