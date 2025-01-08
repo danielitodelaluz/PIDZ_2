@@ -6,8 +6,8 @@
 #include <Servo.h>
 
 //======================= pin ======================
-const uint8_t PIN_US_TRIG = 6;
-const uint8_t PIN_US_ECHO = 7;
+const uint8_t PIN_US_TRIG = 2;
+const uint8_t PIN_US_ECHO = 3;
 const uint8_t PIN_IN_MODE = 4;
 
 const uint8_t PIN_OUT_V = 12;
@@ -213,7 +213,7 @@ void loop() {
   int vCommand = CommandeV(consigne_altitude, currentAltitude);
 
   // Envoi de la commande V au contrôleur de vol
-  vServo.writeMicroseconds(vCommand);
+  // vServo.writeMicroseconds(vCommand);
   lServo.writeMicroseconds(1500);
   tServo.writeMicroseconds(1500);
   rServo.writeMicroseconds(1500);
